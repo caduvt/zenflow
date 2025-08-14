@@ -6,6 +6,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen justify-between">
       <Header />
       {/* <TaskList /> */}
+      <h1>TESTE</h1>
       <Footer />
     </div>
   );
