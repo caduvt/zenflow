@@ -1,4 +1,5 @@
 import Task from '@/types/Task';
+import { text } from 'stream/consumers';
 
 const TASKS_STORAGE = 'zenflow@tasks';
 
@@ -43,7 +44,14 @@ export default class StorageService {
 
   static removeTask(id: string) {
     const tasks = this.getAllTasks();
-    const filteredTasks = tasks.filter((item) => item.id !== id);
+    // if the is only 3 tasks, the removed task will be
+    //replaced by an empty one
+    const filteredTasks =
+      tasks.length > 3
+        ? tasks.filter((item) => item.id !== id)
+        : tasks.map((item) =>
+            item.id === id ? { text: '', id: Date.now() } : item,
+          );
     localStorage.setItem(TASKS_STORAGE, JSON.stringify(filteredTasks));
   }
 

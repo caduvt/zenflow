@@ -27,7 +27,7 @@ export default function TaskList({ title }: Props) {
   };
 
   return (
-    <div className="rounded-2xl w-[40%] flex flex-col gap-2">
+    <div className="rounded-2xl w-full md:w-[40%] flex flex-col gap-2 p-4">
       <h1 className="text-center">{title}</h1>
       {tasks.map((item) => (
         <div key={item.id} className="flex relative">
