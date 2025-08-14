@@ -1,35 +1,57 @@
 'use client';
 
+import { useTasks } from '@/hooks/TaskContext';
 import StorageService from '@/services/StorageService';
 import { Plus } from 'lucide-react';
 
-export default function TaskList() {
-  const tasks = StorageService.getAllTasks();
+type Props = {
+  title: string;
+};
+
+export default function TaskList({ title }: Props) {
+  const { tasks, refreshTasks } = useTasks();
+
+  const handleUpdateTask = (id: string, text: string) => {
+    StorageService.updateTask({ id, text });
+    refreshTasks();
+  };
+
+  const handleRemoveTask = (id: string) => {
+    StorageService.removeTask(id);
+    refreshTasks();
+  };
+
+  const handleAddTask = () => {
+    StorageService.addNewTask();
+    refreshTasks();
+  };
 
   return (
     <div className="rounded-2xl w-[40%] flex flex-col gap-2">
+      <h1 className="text-center">{title}</h1>
       {tasks.map((item) => (
-        <div key={item.id} className="flex">
+        <div key={item.id} className="flex relative">
           <input
             type="text"
-            onChange={(e) =>
-              StorageService.updateTask({
-                id: item.id,
-                text: e.target.value,
-              })
-            }
-            className="border-gray-200 border-2 flex-1"
+            placeholder="digite uma task aqui..."
+            value={item.text}
+            onChange={(e) => handleUpdateTask(item.id, e.target.value)}
+            className="flex-1 w-full bg-gray-200 outline-none text-gray-800 p-2 rounded"
           />
           <button
             type="button"
-            onClick={() => StorageService.removeTask(item.id)}
-            className="cursor-pointer bg-green-400 p-1 opacity-0 scale-90 hover:scale-100 hover:opacity-100 duration-200 rounded-r-2xl relative right-0"
+            onClick={() => handleRemoveTask(item.id)}
+            tabIndex={-1}
+            className="cursor-pointer bg-green-400 p-2 px-4 opacity-0 scale-90 hover:scale-100 hover:opacity-100 duration-200 rounded-r absolute right-0"
           >
-            <span>done?</span>
+            <span className="text-gray-800">done?</span>
           </button>
         </div>
       ))}
-      <button className="cursor-pointer bg-green-400 p-2 flex gap-2 justify-center items-center rounded-2xl">
+      <button
+        className="cursor-pointer bg-green-400 p-2 flex gap-2 justify-center items-center rounded-2xl hover:shadow-cartoon duration-200 hover:scale-101"
+        onClick={handleAddTask}
+      >
         <span className="text-gray-800">add new task</span>
         <Plus />
       </button>
