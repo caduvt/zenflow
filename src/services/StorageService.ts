@@ -1,0 +1,65 @@
+import Task from '@/types/Task';
+
+const TASKS_STORAGE = 'zenflow@tasks';
+
+export default class StorageService {
+  static addNewTask() {
+    try {
+      const tasks = this.getAllTasks();
+      const updatedTasks = [
+        ...tasks,
+        {
+          text: '',
+          done: false,
+          id: Date.now(),
+        },
+      ];
+      localStorage.setItem(TASKS_STORAGE, JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error('Error: cannot add new task!', error);
+    }
+  }
+
+  static getAllTasks(): Task[] {
+    try {
+      const tasks = localStorage.getItem(TASKS_STORAGE);
+      if (!tasks) {
+        return this.clearTasks();
+      }
+      return JSON.parse(tasks);
+    } catch (error) {
+      console.error('Error: cannot get all tasks!', error);
+      return [];
+    }
+  }
+
+  static updateTask(updatedTask: Task) {
+    const tasks = this.getAllTasks();
+    const updatedTasks = tasks.map((item) =>
+      item.id === updatedTask.id ? updatedTask : item,
+    );
+    localStorage.setItem(TASKS_STORAGE, JSON.stringify(updatedTasks));
+  }
+
+  static removeTask(id: string) {
+    const tasks = this.getAllTasks();
+    const filteredTasks = tasks.filter((item) => item.id !== id);
+    localStorage.setItem(TASKS_STORAGE, JSON.stringify(filteredTasks));
+  }
+
+  // By default, the task list initializes with
+  // 3 empty tasks
+  static clearTasks() {
+    const newTaskStorage: Task[] = Array(3)
+      .fill({
+        text: '',
+        id: Date.now(),
+      })
+      .map((item, index) => ({
+        ...item,
+        id: item.id + index,
+      }));
+    localStorage.setItem(TASKS_STORAGE, JSON.stringify(newTaskStorage));
+    return newTaskStorage;
+  }
+}
