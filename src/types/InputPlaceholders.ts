@@ -1,0 +1,26 @@
+const InputPlaceholders = [
+  'play fortnite?',
+  'rank up in clash royale?',
+  'study python?',
+  'learn machine learning?',
+  'go to the gym?',
+  'learn french?',
+  'claim a free game in steam?',
+  'watch a youtube tutorial?',
+  'try a new recipe?',
+  'draw something creative?',
+  'read a chapter of a book?',
+  'write a short story?',
+  'organize your desk?',
+  'meditate for 5 minutes?',
+  'call a friend?',
+  'practice guitar?',
+  'plan your weekend?',
+  'take a short walk?',
+  'try a coding challenge?',
+  'learn a new shortcut?',
+  'do some leetcode?',
+  'crack premiere pro?',
+];
+
+export default InputPlaceholders;

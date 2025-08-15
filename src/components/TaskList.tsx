@@ -2,7 +2,9 @@
 
 import { useTasks } from '@/hooks/TaskContext';
 import StorageService from '@/services/StorageService';
+import InputPlaceholders from '@/types/InputPlaceholders';
 import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
 
 type Props = {
   title: string;
@@ -26,14 +28,24 @@ export default function TaskList({ title }: Props) {
     refreshTasks();
   };
 
+  const placeholderIndices = useMemo(() => {
+    const indices: number[] = [];
+    const available = [...Array(InputPlaceholders.length).keys()];
+    for (let i = 0; i < tasks.length; i++) {
+      const rand = Math.floor(Math.random() * available.length);
+      indices.push(available.splice(rand, 1)[0]);
+    }
+    return indices;
+  }, [tasks.length]);
+
   return (
-    <div className="rounded-2xl w-[40%] flex flex-col gap-2">
+    <div className="rounded-2xl w-full md:w-[40%] flex flex-col gap-2 p-4">
       <h1 className="text-center">{title}</h1>
-      {tasks.map((item) => (
+      {tasks.map((item, index) => (
         <div key={item.id} className="flex relative">
           <input
             type="text"
-            placeholder="digite uma task aqui..."
+            placeholder={InputPlaceholders[placeholderIndices[index]]}
             value={item.text}
             onChange={(e) => handleUpdateTask(item.id, e.target.value)}
             className="flex-1 w-full bg-gray-200 outline-none text-gray-800 p-2 rounded"
