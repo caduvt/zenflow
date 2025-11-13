@@ -1,6 +1,5 @@
+import { TASKS_STORAGE } from '@/Constants';
 import Task from '@/types/Task';
-
-const TASKS_STORAGE = 'zenflow@tasks';
 
 export default class StorageService {
   static addNewTask() {
@@ -45,6 +44,7 @@ export default class StorageService {
     // if the is only 3 tasks, the removed task will be
     //replaced by an empty one
     const index = tasks.findIndex((item) => item.id === id);
+    console.log(index);
     let filteredTasks = tasks.filter((item) => item.id !== id);
     if (index <= 2)
       filteredTasks = [
