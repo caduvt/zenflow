@@ -10,15 +10,21 @@ type Props = {
   title: string;
 };
 
+const defaultTasks = [
+  { text: '', id: Date.now() },
+  { text: '', id: Date.now() + 1 },
+  { text: '', id: Date.now() + 2 },
+];
+
 export default function TaskList({ title }: Props) {
   const { tasks, refreshTasks } = useTasks();
 
-  const handleUpdateTask = (id: string, text: string) => {
+  const handleUpdateTask = (id: number, text: string) => {
     StorageService.updateTask({ id, text });
     refreshTasks();
   };
 
-  const handleRemoveTask = (id: string) => {
+  const handleRemoveTask = (id: number) => {
     StorageService.removeTask(id);
     refreshTasks();
   };
@@ -41,7 +47,7 @@ export default function TaskList({ title }: Props) {
   return (
     <div className="rounded-2xl w-full md:w-[40%] flex flex-col gap-2 p-4">
       <h1 className="text-center">{title}</h1>
-      {tasks.map((item, index) => (
+      {(tasks.length ? tasks : defaultTasks).map((item, index) => (
         <div key={item.id} className="flex relative">
           <input
             type="text"
