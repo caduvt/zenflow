@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --color-background: #ffffff;
+  --color-background: #fffdfd;
   --color-foreground: #171717;
   --font-mono: var(--font-geist-mono);
   --font-size-base: 16px;

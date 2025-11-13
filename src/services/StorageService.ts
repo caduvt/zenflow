@@ -10,7 +10,6 @@ export default class StorageService {
         ...tasks,
         {
           text: '',
-          done: false,
           id: Date.now(),
         },
       ];
@@ -45,12 +44,14 @@ export default class StorageService {
     const tasks = this.getAllTasks();
     // if the is only 3 tasks, the removed task will be
     //replaced by an empty one
-    const filteredTasks =
-      tasks.length > 3
-        ? tasks.filter((item) => item.id !== id)
-        : tasks.map((item) =>
-            item.id === id ? { text: '', id: Date.now() } : item,
-          );
+    const index = tasks.findIndex((item) => item.id === id);
+    let filteredTasks = tasks.filter((item) => item.id !== id);
+    if (index <= 2)
+      filteredTasks = [
+        filteredTasks[0],
+        filteredTasks[1],
+        { text: '', id: Date.now().toString() },
+      ].concat(filteredTasks.slice(3, -1));
     localStorage.setItem(TASKS_STORAGE, JSON.stringify(filteredTasks));
   }
 
