@@ -1,6 +1,6 @@
 type Task = {
   text: string;
-  id: string;
+  id: number;
 };
 
 export default Task;

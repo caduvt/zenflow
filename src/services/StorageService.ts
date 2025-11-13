@@ -39,7 +39,7 @@ export default class StorageService {
     localStorage.setItem(TASKS_STORAGE, JSON.stringify(updatedTasks));
   }
 
-  static removeTask(id: string) {
+  static removeTask(id: number) {
     const tasks = this.getAllTasks();
     // if the is only 3 tasks, the removed task will be
     //replaced by an empty one
@@ -50,7 +50,7 @@ export default class StorageService {
       filteredTasks = [
         filteredTasks[0],
         filteredTasks[1],
-        { text: '', id: Date.now().toString() },
+        { text: '', id: Date.now() },
       ].concat(filteredTasks.slice(3, -1));
     localStorage.setItem(TASKS_STORAGE, JSON.stringify(filteredTasks));
   }
